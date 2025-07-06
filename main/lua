@@ -1,0 +1,540 @@
+local soundIds = {
+    
+	"rbxassetid://2554263184",
+	"rbxassetid://4523066727",
+	"rbxassetid://6670645219",
+	"rbxassetid://135077341189682",
+	"rbxassetid://6678131048"
+	
+}
+
+local sounds = {}
+
+for _, id in ipairs(soundIds) do
+    local sound = Instance.new("Sound")
+    sound.SoundId = id
+    sound.Volume = 10
+    sound.Parent = workspace
+    table.insert(sounds, sound)
+end
+
+local function playRandomSound()
+    local index = math.random(1, #sounds)
+    sounds[index]:Play()
+end
+
+
+playRandomSound()
+
+
+
+
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+
+local soundIds = {
+    "rbxassetid://18696849447", 
+    "rbxassetid://6924545240"  
+}
+
+local sounds = {}
+
+
+
+for _, id in ipairs(soundIds) do
+    local sound = Instance.new("Sound")
+    sound.SoundId = id
+	sound.Volume = 8
+    sound.Parent = workspace
+    table.insert(sounds, sound)
+end
+
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+local played = false
+
+local function onCharacterAdded(char)
+    character = char
+    humanoid = character:WaitForChild("Humanoid")
+    played = false
+end
+
+player.CharacterAdded:Connect(onCharacterAdded)
+
+RunService.RenderStepped:Connect(function()
+    if humanoid then
+        if humanoid.Health <= 0 and not played then
+           
+            local randomIndex = math.random(1, #sounds)
+            sounds[randomIndex]:Play()
+            played = true
+        elseif humanoid.Health > 0 then
+            played = false
+        end
+    end
+end)
+
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local Intimestop = false 
+local checking = false
+local loopThread
+
+local function startChecking()
+	if checking then return end
+	checking = true
+
+	loopThread = task.spawn(function()
+		while Intimestop do
+			local live = workspace:FindFirstChild("Live")
+			if live then
+				local char = live:FindFirstChild(LocalPlayer.Name)
+				if char then
+					for _, name in ipairs({"InTimestop", "Freeze", "NoRotate"}) do
+						local acc = char:FindFirstChild(name)
+						if acc and acc:IsA("Accessory") then
+							acc:Destroy()
+						end
+					end
+				end
+			end
+			task.wait(0.1)
+		end
+		checking = false
+	end)
+end
+
+
+startChecking()
+
+
+
+player.CharacterAdded:Connect(function()
+	if Intimestop then
+		startChecking()
+	end
+end)
+
+
+task.spawn(function()
+	while true do
+		if Intimestop and not checking then
+			startChecking()
+		end
+		task.wait(0.1)
+	end
+end)
+
+-- Example usage:
+-- Intimestop = true  -- start checking
+-- Intimestop = false -- stop checking
+
+
+
+
+
+--[[
+		Example Compkiller UI
+	
+	Author: 4lpaca
+	
+	Press Left Alt to open / close
+]]
+
+local Compkiller = loadstring(game:HttpGet("https://raw.githubusercontent.com/4lpaca-pin/CompKiller/refs/heads/main/src/source.luau"))();
+
+-- Create Notification --
+local Notifier = Compkiller.newNotify();
+
+-- Create Config Mamager --
+local ConfigManager = Compkiller:ConfigManager({
+	Directory = "Compkiller-UI",
+	Config = "Example-Configs"
+});
+
+-- Loading UI (Icon <string> , Duration <number>) --
+Compkiller:Loader("rbxassetid://120245531583106" , 2.5).yield();
+
+-- Creating Window --
+local Window = Compkiller.new({
+	Name = "BIZZARE",
+	Keybind = "LeftControl",
+	Logo = "rbxassetid://137759317342542",
+	Scale = Compkiller.Scale.Window, -- Leave blank if you want automatic scale [PC, Mobile].
+	TextSize = 15,
+});
+
+-- Notification --
+
+Notifier.new({
+	Title = "Notification",
+	Content = "VERY SIGMA SCRIPT!",
+	Duration = 5,
+	Icon = "rbxassetid://93744907456752"
+});
+
+-- Watermark --
+local Watermark = Window:Watermark();
+
+Watermark:AddText({
+	Icon = "user",
+	Text = plrName,
+});
+
+Watermark:AddText({
+	Icon = "clock",
+	Text = Compkiller:GetDate(),
+});
+
+local Time = Watermark:AddText({
+	Icon = "timer",
+	Text = "TIME",
+});
+
+task.spawn(function()
+	while true do task.wait()
+		Time:SetText(Compkiller:GetTimeNow());
+	end
+end)
+
+Watermark:AddText({
+	Icon = "server",
+	Text = Compkiller.Version,
+});
+
+-- Creating Tab Category --
+Window:DrawCategory({
+	Name = "Example"
+});
+
+-- Creating Tab --
+local NormalTab = Window:DrawTab({
+	Name = "sigma",
+	Icon = "star-half",
+	EnableScrolling = true
+});
+
+-- Creating Section --
+local NormalSection = NormalTab:DrawSection({
+	Name = "Subtle",
+	Position = 'left'	
+});
+
+local Toggle = NormalSection:AddToggle({
+	Name = "No Foward Dash CD",
+	Flag = "tog1", -- Leave it blank will not save to config
+	Default = false,
+	Callback = function(v)
+
+local s = v
+
+
+	local Players = game:GetService("Players")
+	local lp = Players.LocalPlayer
+	local charFolder = workspace:WaitForChild("Live"):WaitForChild(lp.Name)
+
+	while s do
+		for _, accessory in ipairs(charFolder:GetChildren()) do
+			if accessory:IsA("Accessory") and accessory.Name == "ForwardCD" and v then
+				accessory:Destroy()
+			end
+		end
+		task.wait(0.1)
+	end
+end
+
+
+
+});
+
+Toggle.Link:AddHelper({
+	Text = "The dashes done during the cooldown wont do damage, only play the anim and velocity."
+})
+
+-- Add Option To Toggle --
+local Toggle2 = NormalSection:AddToggle({
+	Name = "asdas",
+	Flag = "Toggle_Example2", -- Leave it blank will not save to config
+	Default = false,
+	Callback = function(v)
+		
+		Intimestop = v
+		
+		
+		
+		
+		
+		
+		
+	end,
+});
+
+
+
+
+do
+	local Toggle4 = NormalSection:AddToggle({
+		Name = "No ragdoll cancel cooldown",
+		Flag = "Toggle_Example5", -- Leave it blank will not save to config
+		Default = false,
+		Risky = false,
+		Callback = function(v)
+			
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+while v do
+	task.wait(0.1)
+
+	local char = workspace:FindFirstChild("Live")
+	if not char then continue end
+
+	local lpChar = char:FindFirstChild(LocalPlayer.Name)
+	if lpChar then
+		lpChar:SetAttribute("RagdollCancelCD", false)
+	end
+end
+			
+		end,
+	});
+
+	local Option = Toggle2.Link:AddOption()
+
+	Option:AddToggle({
+		Risky = true,
+		Name= "...",
+		Flag = "Toggle_Example6",
+		Callback = print
+	});
+end
+
+
+
+DrawElements(NormalTab,'right')
+
+-- Single Tab --
+local SingleTab = Window:DrawTab({
+	Name = "Single Tab",
+	Icon = "banana",
+	Type = "Single"
+});
+
+DrawElements(SingleTab,'left')
+
+-- Container Tab --
+local ContainerTab = Window:DrawContainerTab({
+	Name = "Extract Tabs",
+	Icon = "contact",
+});
+
+local ExtractTab = ContainerTab:DrawTab({
+	Name = "Tab 1",
+	Type = "Double"
+});
+
+local SingleExtractTab = ContainerTab:DrawTab({
+	Name = "Tab 2",
+	Type = "Single",
+	EnableScrolling = true, -- this will make tab can scrolling (recommend)
+});
+
+DrawElements(ExtractTab,"left");
+DrawElements(ExtractTab,"right");
+
+DrawElements(SingleExtractTab,"left");
+DrawElements(SingleExtractTab,"right");
+
+Window:DrawCategory({
+	Name = "Misc"
+});
+
+local SettingTab = Window:DrawTab({
+	Icon = "settings-3",
+	Name = "Settings",
+	Type = "Single",
+	EnableScrolling = true
+});
+
+local ThemeTab = Window:DrawTab({
+	Icon = "paintbrush",
+	Name = "Themes",
+	Type = "Single"
+});
+
+local Settings = SettingTab:DrawSection({
+	Name = "UI Settings",
+});
+
+Settings:AddToggle({
+	Name = "Alway Show Frame",
+	Default = false,
+	Callback = function(v)
+		Window.AlwayShowTab = v;
+	end,
+});
+
+Settings:AddColorPicker({
+	Name = "Highlight",
+	Default = Compkiller.Colors.Highlight,
+	Callback = function(v)
+		Compkiller.Colors.Highlight = v;
+		Compkiller:RefreshCurrentColor();
+	end,
+});
+
+Settings:AddColorPicker({
+	Name = "Toggle Color",
+	Default = Compkiller.Colors.Toggle,
+	Callback = function(v)
+		Compkiller.Colors.Toggle = v;
+		
+		Compkiller:RefreshCurrentColor(v);
+	end,
+});
+
+Settings:AddColorPicker({
+	Name = "Drop Color",
+	Default = Compkiller.Colors.DropColor,
+	Callback = function(v)
+		Compkiller.Colors.DropColor = v;
+
+		Compkiller:RefreshCurrentColor(v);
+	end,
+});
+
+Settings:AddColorPicker({
+	Name = "Risky",
+	Default = Compkiller.Colors.Risky,
+	Callback = function(v)
+		Compkiller.Colors.Risky = v;
+
+		Compkiller:RefreshCurrentColor(v);
+	end,
+});
+
+Settings:AddColorPicker({
+	Name = "Mouse Enter",
+	Default = Compkiller.Colors.MouseEnter,
+	Callback = function(v)
+		Compkiller.Colors.MouseEnter = v;
+
+		Compkiller:RefreshCurrentColor(v);
+	end,
+});
+
+Settings:AddColorPicker({
+	Name = "Block Color",
+	Default = Compkiller.Colors.BlockColor,
+	Callback = function(v)
+		Compkiller.Colors.BlockColor = v;
+
+		Compkiller:RefreshCurrentColor(v);
+	end,
+});
+
+Settings:AddColorPicker({
+	Name = "Background Color",
+	Default = Compkiller.Colors.BGDBColor,
+	Callback = function(v)
+		Compkiller.Colors.BGDBColor = v;
+
+		Compkiller:RefreshCurrentColor(v);
+	end,
+});
+
+Settings:AddColorPicker({
+	Name = "Block Background Color",
+	Default = Compkiller.Colors.BlockBackground,
+	Callback = function(v)
+		Compkiller.Colors.BlockBackground = v;
+
+		Compkiller:RefreshCurrentColor(v);
+	end,
+});
+
+Settings:AddColorPicker({
+	Name = "Stroke Color",
+	Default = Compkiller.Colors.StrokeColor,
+	Callback = function(v)
+		Compkiller.Colors.StrokeColor = v;
+
+		Compkiller:RefreshCurrentColor(v);
+	end,
+});
+
+Settings:AddColorPicker({
+	Name = "High Stroke Color",
+	Default = Compkiller.Colors.HighStrokeColor,
+	Callback = function(v)
+		Compkiller.Colors.HighStrokeColor = v;
+
+		Compkiller:RefreshCurrentColor(v);
+	end,
+});
+
+Settings:AddColorPicker({
+	Name = "Switch Color",
+	Default = Compkiller.Colors.SwitchColor,
+	Callback = function(v)
+		Compkiller.Colors.SwitchColor = v;
+
+		Compkiller:RefreshCurrentColor(v);
+	end,
+});
+
+Settings:AddColorPicker({
+	Name = "Line Color",
+	Default = Compkiller.Colors.LineColor,
+	Callback = function(v)
+		Compkiller.Colors.LineColor = v;
+
+		Compkiller:RefreshCurrentColor(v);
+	end,
+});
+
+Settings:AddButton({
+	Name = "Get Theme",
+	Callback = function()
+		print(Compkiller:GetTheme())
+		
+		Notifier.new({
+			Title = "Notification",
+			Content = "Copied Them Color to your clipboard",
+			Duration = 5,
+			Icon = "rbxassetid://120245531583106"
+		});
+	end,
+});
+
+ThemeTab:DrawSection({
+	Name = "UI Themes"
+}):AddDropdown({
+	Name = "Select Theme",
+	Default = "Default",
+	Values = {
+		"Default",
+		"Dark Green",
+		"Dark Blue",
+		"Purple Rose",
+		"Skeet"
+	},
+	Callback = function(v)
+		Compkiller:SetTheme(v)
+	end,
+})
+
+-- Creating Config Tab --
+local ConfigUI = Window:DrawConfig({
+	Name = "Config",
+	Icon = "folder",
+	Config = ConfigManager
+});
+
+ConfigUI:Init();
