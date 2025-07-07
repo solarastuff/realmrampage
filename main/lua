@@ -259,7 +259,7 @@ Toggle.Link:AddHelper({
 
 -- Add Option To Toggle --
 local Toggle2 = NormalSection:AddToggle({
-	Name = "move in time stop (side dash)",
+	Name = "move in time stop",
 	Flag = "Toggle_Example2", -- Leave it blank will not save to config
 	Default = false,
 	Callback = function(v)
@@ -309,7 +309,7 @@ end
 
 	Option:AddToggle({
 		Risky = true,
-		Name= "...",
+		Name= "side dash during time stop to move",
 		Flag = "Toggle_Example6",
 		Callback = print
 	});
